@@ -75,5 +75,3 @@ export function h(name, attrs) {
 	sanitized[s] = true;
 	return s;
 }
-
-export default h;

@@ -1,5 +1,4 @@
-import h from '../src/vhtml';
-import {options} from '../src/vhtml';
+import {h,options} from '../src/vhtml';
 import { expect } from 'chai';
 /** @jsx h */
 /*global describe,it*/

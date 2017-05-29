@@ -1,28 +1,37 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-	typeof define === 'function' && define.amd ? define(factory) :
-	(global.vhtml = factory());
-}(this, (function () { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.vhtml = global.vhtml || {})));
+}(this, (function (exports) { 'use strict';
 
 var emptyTags = ['area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr'];
 
-var esc = function esc(str) {
-	return String(str).replace(/[&<>"']/g, function (s) {
-		return '&' + map[s] + ';';
-	});
-};
 var map = { '&': 'amp', '<': 'lt', '>': 'gt', '"': 'quot', "'": 'apos' };
-var DOMAttributeNames = {
-	className: 'class',
-	htmlFor: 'for'
-};
-
 var sanitized = {};
-var noEscape = ['style'];
 
-function normalizeAttr(attr) {
-	return attr.toLowerCase();
-}
+var options = {
+	noEscape: ['style'],
+	emptyTags: emptyTags,
+	escape: function escape(str) {
+		return String(str).replace(/[&<>"']/g, function (s) {
+			return '&' + map[s] + ';';
+		});
+	},
+	normalizeAttr: function normalizeAttr(attr) {
+		return attr.toLowerCase();
+	},
+	normalizeAttrValue: function normalizeAttrValue(attr, value) {
+		return value;
+	},
+	normalizeNode: function normalizeNode(node) {
+		return node.toLowerCase();
+	},
+
+	DOMAttributeNames: {
+		className: 'class',
+		htmlFor: 'for'
+	}
+};
 
 function h(name, attrs) {
 	var stack = [];
@@ -35,10 +44,14 @@ function h(name, attrs) {
 		return name(attrs);
 	}
 
-	var s = '<' + name;
+	var s = '<' + options.normalizeNode(name);
 	if (attrs) for (var _i in attrs) {
 		if (attrs[_i] !== false && attrs[_i] != null) {
-			s += ' ' + (DOMAttributeNames[_i] ? DOMAttributeNames[_i] : esc(normalizeAttr(_i))) + '="' + esc(attrs[_i]) + '"';
+			var attrName = options.DOMAttributeNames[_i] ? options.normalizeAttr(options.DOMAttributeNames[_i]) : options.escape(options.normalizeAttr(_i));
+			var attrValue = options.escape(options.normalizeAttrValue(attrName, attrs[_i]));
+			if (attrName && attrValue) {
+				s += ' ' + attrName + '="' + attrValue + '"';
+			}
 		}
 	}
 
@@ -53,12 +66,12 @@ function h(name, attrs) {
 						stack.push(child[_i2]);
 					}
 				} else {
-					s += sanitized[child] === true || noEscape.indexOf(name) !== -1 ? child : esc(child);
+					s += sanitized[child] === true || options.noEscape.indexOf(name) !== -1 ? child : options.escape(child);
 				}
 			}
 		}
 
-		s += '</' + name + '>';
+		s += '</' + options.normalizeNode(name) + '>';
 	} else {
 		s += '>';
 	}
@@ -67,7 +80,8 @@ function h(name, attrs) {
 	return s;
 }
 
-return h;
+exports.options = options;
+exports.h = h;
 
 })));
 //# sourceMappingURL=vhtml.js.map

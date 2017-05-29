@@ -6,11 +6,10 @@ import es3 from 'rollup-plugin-es3';
 let pkg = JSON.parse(fs.readFileSync('./package.json'));
 
 export default {
-	entry: pkg['jsnext:main'],
+	entry: pkg.module,
 	dest: pkg.main,
 	sourceMap: path.resolve(pkg.main),
 	moduleName: pkg.amdName,
-	exports: 'default',
 	format: 'umd',
 	plugins: [
 		babel({

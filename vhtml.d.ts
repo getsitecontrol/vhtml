@@ -1,6 +1,6 @@
 //From react.d.ts
 
-declare module 'vhtml' {
+declare namespace vhtml {
 	interface FunctionalComponent<PropsType> {
 		(props?: PropsType): JSX.Element;
 	}
@@ -19,8 +19,10 @@ declare module 'vhtml' {
 
 	export function h<PropsType> (node: FunctionalComponent<PropsType>, params: PropsType, ...children: (JSX.Element | JSX.Element[] | string)[]): JSX.Element;
 	export function h (node: string, params: JSX.HTMLAttributes<any> & JSX.SVGAttributes<any> & { [propName: string]: any }, ...children: (JSX.Element | JSX.Element[] | string)[]): JSX.Element;
+}
 
-	export default h;
+declare module 'vhtml' {
+	export = vhtml
 }
 
 declare namespace JSX {
