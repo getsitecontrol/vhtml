@@ -1,4 +1,5 @@
 import h from '../src/vhtml';
+import {options} from '../src/vhtml';
 import { expect } from 'chai';
 /** @jsx h */
 /*global describe,it*/
@@ -163,6 +164,24 @@ describe('vhtml', () => {
 			<div className="my-class" htmlFor="id" />
 		).to.equal(
 			'<div class="my-class" for="id"></div>'
+		);
+	});
+
+	it('should handle camelCased prop names', () => {
+		expect(
+			<div onMouseLeave="open()" tabIndex={1} htmlFor="id" />
+		).to.equal(
+			'<div onmouseleave="open()" tabindex="1" for="id"></div>'
+		);
+	});
+
+	it('should handle options', () => {
+		options.normalizeNode = (nodeName)=>nodeName.toUpperCase();
+		options.normalizeAttr = (nodeName)=>nodeName.toUpperCase();
+		expect(
+			<div onMouseLeave="open()" tabIndex={1} htmlFor="id" />
+		).to.equal(
+			'<DIV ONMOUSELEAVE="open()" TABINDEX="1" FOR="id"></DIV>'
 		);
 	});
 });

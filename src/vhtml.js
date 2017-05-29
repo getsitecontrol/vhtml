@@ -1,17 +1,34 @@
 import emptyTags from './empty-tags';
 
 // escape an attribute
-let esc = str => String(str).replace(/[&<>"']/g, s=>`&${map[s]};`);
-let map = {'&':'amp','<':'lt','>':'gt','"':'quot',"'":'apos'};
-let DOMAttributeNames = {
-	className: 'class',
-	htmlFor: 'for'
-};
-
+const map = {'&':'amp','<':'lt','>':'gt','"':'quot',"'":'apos'};
 let sanitized = {};
 
+export const options = {
+	noEscape:[
+		'style'
+	],
+	emptyTags,
+	escape(str) {
+		return String(str).replace(/[&<>"']/g, s=>`&${map[s]};`);
+	},
+	normalizeAttr (attr) {
+		return attr.toLowerCase();
+	},
+	normalizeAttrValue (attr,value) {
+		return value;
+	},
+	normalizeNode (node) {
+		return node.toLowerCase();
+	},
+	DOMAttributeNames: {
+		className: 'class',
+		htmlFor: 'for'
+	}
+};
+
 /** Hyperscript reviver that constructs a sanitized HTML string. */
-export default function h(name, attrs) {
+export function h(name, attrs) {
 	let stack=[];
 	for (let i=arguments.length; i-- > 2; ) {
 		stack.push(arguments[i]);
@@ -24,10 +41,14 @@ export default function h(name, attrs) {
 		// return name(attrs, stack.reverse());
 	}
 
-	let s = `<${name}`;
+	let s = `<${options.normalizeNode(name)}`;
 	if (attrs) for (let i in attrs) {
 		if (attrs[i]!==false && attrs[i]!=null) {
-			s += ` ${DOMAttributeNames[i] ? DOMAttributeNames[i] : esc(i)}="${esc(attrs[i])}"`;
+			const attrName = options.DOMAttributeNames[i] ? options.normalizeAttr(options.DOMAttributeNames[i]) : options.escape(options.normalizeAttr(i));
+			const attrValue = options.escape(options.normalizeAttrValue(attrName,attrs[i]));
+			if (attrName && attrValue){
+				s += ` ${attrName}="${attrValue}"`;
+			}
 		}
 	}
 
@@ -41,12 +62,12 @@ export default function h(name, attrs) {
 					for (let i=child.length; i--; ) stack.push(child[i]);
 				}
 				else {
-					s += sanitized[child]===true ? child : esc(child);
+					s += sanitized[child]===true || options.noEscape.indexOf(name) !== -1 ? child : options.escape(child);
 				}
 			}
 		}
 
-		s += `</${name}>`;
+		s += `</${options.normalizeNode(name)}>`;
 	} else {
 		s += '>';
 	}
@@ -54,3 +75,5 @@ export default function h(name, attrs) {
 	sanitized[s] = true;
 	return s;
 }
+
+export default h;
