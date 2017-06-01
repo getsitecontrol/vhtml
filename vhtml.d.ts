@@ -27,7 +27,7 @@ declare module 'vhtml' {
 
 declare namespace JSX {
 	interface Element {
-		children?: Element[] | string
+		children?: Element | Element[] | string
 	}
 	interface ElementClass {
 		props: HTMLAttributes<any>
@@ -45,7 +45,7 @@ declare namespace JSX {
 	}
 
 	interface DOMAttributes<T> {
-		children?: Element[] | string
+		children?: Element | Element[] | string
 
 		// Clipboard Events
 		onCopy?: string;
