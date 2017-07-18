@@ -4,6 +4,7 @@
   "version": "2.1.2",
   "description": "Hyperscript reviver that constructs a sanitized HTML string.",
   "main": "dist/vhtml.js",
+  "module": "src/vhtml.js",
   "minified:main": "dist/vhtml.min.js",
   "typings": "vhtml.d.ts",
   "scripts": {
