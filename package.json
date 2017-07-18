@@ -5,8 +5,6 @@
   "description": "Hyperscript reviver that constructs a sanitized HTML string.",
   "main": "dist/vhtml.js",
   "minified:main": "dist/vhtml.min.js",
-  "jsnext:main": "src/vhtml.js",
-  "module": "src/vhtml.js",
   "typings": "vhtml.d.ts",
   "scripts": {
     "build": "npm-run-all transpile minify size",
