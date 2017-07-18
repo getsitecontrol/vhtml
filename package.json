@@ -1,7 +1,7 @@
 {
   "name": "vhtml",
   "amdName": "vhtml",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "Hyperscript reviver that constructs a sanitized HTML string.",
   "main": "dist/vhtml.js",
   "module": "src/vhtml.js",
