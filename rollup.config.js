@@ -6,7 +6,7 @@ import es3 from 'rollup-plugin-es3';
 let pkg = JSON.parse(fs.readFileSync('./package.json'));
 
 export default {
-	entry: pkg.module,
+	entry: 'src/vhtml.js',
 	dest: pkg.main,
 	sourceMap: path.resolve(pkg.main),
 	moduleName: pkg.amdName,
