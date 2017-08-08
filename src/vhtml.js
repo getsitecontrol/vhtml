@@ -6,7 +6,8 @@ let sanitized = {};
 
 export const options = {
 	noEscape:[
-		'style'
+		'style',
+		'script'
 	],
 	emptyTags,
 	escape(str) {
