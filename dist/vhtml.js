@@ -10,7 +10,7 @@ var map = { '&': 'amp', '<': 'lt', '>': 'gt', '"': 'quot', "'": 'apos' };
 var sanitized = {};
 
 var options = {
-	noEscape: ['style'],
+	noEscape: ['style', 'script'],
 	emptyTags: emptyTags,
 	escape: function escape(str) {
 		return String(str).replace(/[&<>"']/g, function (s) {
