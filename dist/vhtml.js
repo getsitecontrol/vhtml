@@ -1,7 +1,7 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	(factory((global.vhtml = global.vhtml || {})));
+	(factory((global.vhtml = {})));
 }(this, (function (exports) { 'use strict';
 
 var emptyTags = ['area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr'];
@@ -82,6 +82,8 @@ function h(name, attrs) {
 
 exports.options = options;
 exports.h = h;
+
+Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 //# sourceMappingURL=vhtml.js.map
