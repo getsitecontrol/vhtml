@@ -32,7 +32,8 @@
   },
   "files": [
     "src",
-    "dist"
+    "dist",
+    "vhtml.d.ts"
   ],
   "keywords": [
     "hyperscript",
