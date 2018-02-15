@@ -3,7 +3,7 @@ declare namespace vhtml {
 		nodeName: ComponentConstructor<any> | string
 		attributes: { [name: string]: any }
 		children: VNode[]
-		key: string
+		key?: string
 	}
 
 	interface FunctionalComponent<PropsType> {
@@ -331,6 +331,7 @@ declare namespace JSX {
 
 	interface HTMLAttributes {
 		// Standard HTML Attributes
+		__innerHTML?: string
 		accept?: string
 		acceptCharset?: string
 		accessKey?: string

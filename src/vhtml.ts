@@ -57,7 +57,7 @@ export function h(name, attrs) {
 	}
 
 	let s = `<${options.normalizeNode(name)}`
-	if (attrs)
+	if (attrs && !attrs['__innerHTML']) {
 		for (let i in attrs) {
 			if (attrs[i] !== false && attrs[i] != null) {
 				const attrName = options.DOMAttributeNames[i]
@@ -71,24 +71,27 @@ export function h(name, attrs) {
 				}
 			}
 		}
+	}
 
 	if (emptyTags.indexOf(name) === -1) {
 		s += '>'
-
-		while (stack.length) {
-			let child = stack.pop()
-			if (child) {
-				if (child.pop) {
-					for (let i = child.length; i--; ) stack.push(child[i])
-				} else {
-					s +=
-						sanitized[child] === true || options.noEscape.indexOf(name) !== -1
-							? child
-							: options.escape(child)
+		if (attrs && attrs['__innerHTML']) {
+			s += attrs['__innerHTML']
+		} else {
+			while (stack.length) {
+				let child = stack.pop()
+				if (child) {
+					if (child.pop) {
+						for (let i = child.length; i--; ) stack.push(child[i])
+					} else {
+						s +=
+							sanitized[child] === true || options.noEscape.indexOf(name) !== -1
+								? child
+								: options.escape(child)
+					}
 				}
 			}
 		}
-
 		s += `</${options.normalizeNode(name)}>`
 	} else {
 		s += '>'

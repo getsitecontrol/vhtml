@@ -154,6 +154,12 @@ describe('vhtml', () => {
 		)
 	})
 
+	it('should handle __innerHTML', () => {
+		expect(<div __innerHTML={`<div>hello</div>`}/>).to.equal(
+			'<div><div>hello</div></div>'
+		)
+	})
+
 	it('should handle options', () => {
 		options.normalizeNode = nodeName => nodeName.toUpperCase()
 		options.normalizeAttr = nodeName => nodeName.toUpperCase()
