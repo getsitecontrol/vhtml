@@ -46,7 +46,8 @@ function concat<T>(...item: (T | T[])[]): T[] {
 }
 
 /** Hyperscript reviver that constructs a JSON string. */
-export function h(name, attrs?: any, children?: any) {
+export function h(name, attrs?: any, ...children: any[]) {
+	children = concat([], ...children)
 	// Sortof component support!
 	if (typeof name === 'function') {
 		;(attrs || (attrs = {})).children = children
@@ -56,7 +57,7 @@ export function h(name, attrs?: any, children?: any) {
 	return {
 		nodeName: name,
 		attributes: attrs || {},
-		children: concat([], ...(children || [])),
+		children,
 	}
 }
 

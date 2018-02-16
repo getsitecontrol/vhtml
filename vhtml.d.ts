@@ -31,12 +31,29 @@ declare namespace vhtml {
 		params: PropsType,
 		...children: (JSX.Element | JSX.Element[] | string)[]
 	): JSX.Element
+
+
 	function h(
 		node: string,
 		params: JSX.HTMLAttributes &
 			JSX.SVGAttributes & { [propName: string]: any },
 		...children: (JSX.Element | JSX.Element[] | string)[]
 	): JSX.Element
+
+	function html<PropsType>(
+		node: ComponentConstructor<PropsType> | FunctionalComponent<PropsType>,
+		params: PropsType,
+		...children: (JSX.Element | JSX.Element[] | string)[]
+	): string
+
+	
+	function html(
+		node: string,
+		params: JSX.HTMLAttributes &
+			JSX.SVGAttributes & { [propName: string]: any },
+		...children: (JSX.Element | JSX.Element[] | string)[]
+	): string
+
 
 	const options: {
 		noEscape: string[]
