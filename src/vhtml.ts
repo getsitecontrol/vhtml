@@ -41,9 +41,27 @@ export const options = {
 		htmlFor: 'for',
 	},
 }
+function concat<T>(...item: (T | T[])[]): T[] {
+	return Array.prototype.concat.apply([], item)
+}
+
+/** Hyperscript reviver that constructs a JSON string. */
+export function h(name, attrs?: any, children?: any) {
+	// Sortof component support!
+	if (typeof name === 'function') {
+		;(attrs || (attrs = {})).children = children
+		return name(attrs)
+		// return name(attrs, stack.reverse());
+	}
+	return {
+		nodeName: name,
+		attributes: attrs || {},
+		children: concat([], ...(children || [])),
+	}
+}
 
 /** Hyperscript reviver that constructs a sanitized HTML string. */
-export function h(name, attrs) {
+export function html(name, attrs) {
 	let stack = []
 	for (let i = arguments.length; i-- > 2; ) {
 		stack.push(arguments[i])

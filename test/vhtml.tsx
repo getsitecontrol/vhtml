@@ -1,9 +1,9 @@
 const { expect } =require('chai')
-const { h, options } = require('../src/vhtml')
-/** @jsx h */
+const { html:h, options } = require('../src/vhtml')
+/** @jsx html */
 /*global describe,it*/
 
-describe('vhtml', () => {
+describe('vhtml to html', () => {
 	it('should stringify html', () => {
 		let items = ['one', 'two', 'three']
 		expect(
@@ -161,10 +161,14 @@ describe('vhtml', () => {
 	})
 
 	it('should handle options', () => {
+		const normalizeNode = options.normalizeNode
+		const normalizeAttr = options.normalizeAttr
 		options.normalizeNode = nodeName => nodeName.toUpperCase()
 		options.normalizeAttr = nodeName => nodeName.toUpperCase()
 		expect(<div onmouseleave="open()" tabIndex={1} htmlFor="id" />).to.equal(
 			'<DIV ONMOUSELEAVE="open()" TABINDEX="1" FOR="id"></DIV>'
 		)
+		options.normalizeNode = normalizeNode
+		options.normalizeAttr = normalizeAttr
 	})
 })
